@@ -7,5 +7,13 @@ import io.realm.RealmObject;
  */
 
 public class Envelope extends RealmObject {
+    private String name;
 
+    public String getPayee() {
+        return name;
+    }
+
+    public void setPayee(String name) {
+        this.name = name;
+    }
 }
