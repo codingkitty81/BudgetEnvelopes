@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,11 @@
             android:label="@string/title_activity_envelope" />
         <activity
             android:name=".TransactionActivity"
-            android:label="@string/title_activity_transaction"></activity>
+            android:label="@string/title_activity_transaction" />
+        <activity android:name=".AddEnvelopeActivity"
+            android:label="@string/title_add_envelopes"/>
+        <activity android:name=".AddTransactionActivity"
+            android:label="@string/title_add_transactions"></activity>
     </application>
 
 </manifest>

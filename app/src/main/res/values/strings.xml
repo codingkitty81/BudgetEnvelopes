@@ -10,4 +10,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_transaction">TransactionActivity</string>
+    <string-array name="debit_credit_array">
+        <item>Debit</item>
+        <item>Credit</item>
+    </string-array>
 </resources>
