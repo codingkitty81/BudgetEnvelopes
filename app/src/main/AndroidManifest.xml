@@ -25,10 +25,13 @@
         <activity
             android:name=".TransactionActivity"
             android:label="@string/title_activity_transaction" />
-        <activity android:name=".AddEnvelopeActivity"
-            android:label="@string/title_add_envelopes"/>
-        <activity android:name=".AddTransactionActivity"
-            android:label="@string/title_add_transactions"></activity>
+        <activity
+            android:name=".AddEnvelopeActivity"
+            android:label="@string/title_add_envelopes" />
+        <activity
+            android:name=".AddTransactionActivity"
+            android:label="@string/title_add_transactions" />
+        <activity android:name=".CalendarActivity" />
     </application>
 
 </manifest>
