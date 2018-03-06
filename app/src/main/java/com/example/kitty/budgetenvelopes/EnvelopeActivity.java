@@ -6,8 +6,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.example.kitty.budgetenvelopes.model.Envelope;
+
+import io.realm.Realm;
 
 public class EnvelopeActivity extends AppCompatActivity {
+
+    Realm realm;
+    TextView message;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -40,6 +48,16 @@ public class EnvelopeActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.envelope_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        realm = Realm.getDefaultInstance();
+        message = (TextView) findViewById(R.id.message);
+
+        Envelope envelope = realm.where(Envelope.class).equalTo("name", "kitty").findFirst();
+        if(envelope != null) {
+            String name = envelope.getEnvelopeName();
+            message.setText(name);
+        }
+
     }
 
 }
