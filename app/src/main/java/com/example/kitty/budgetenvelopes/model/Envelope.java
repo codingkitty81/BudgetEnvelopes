@@ -1,13 +1,18 @@
 package com.example.kitty.budgetenvelopes.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by Kitty on 2/16/2018.
  */
 
 public class Envelope extends RealmObject {
+    @PrimaryKey
+    @Required
     private String name;
+
     private double balance;
     private boolean round_up_flag;
     private boolean move_balance_flag;
@@ -34,4 +39,5 @@ public class Envelope extends RealmObject {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
 }

@@ -28,8 +28,8 @@ public class EnvelopeActivity extends AppCompatActivity {
                     intent = new Intent(EnvelopeActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.navigation_add_envelopes:
-                    intent = new Intent(EnvelopeActivity.this, AddEnvelopeActivity.class);
+                case R.id.navigation_envelopes:
+                    intent = new Intent(EnvelopeActivity.this, EnvelopeActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.navigation_transactions:

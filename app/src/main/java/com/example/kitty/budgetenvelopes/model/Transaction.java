@@ -2,6 +2,7 @@ package com.example.kitty.budgetenvelopes.model;
 
 
 import io.realm.RealmObject;
+import io.realm.annotations.Required;
 
 /**
  * Created by Kitty on 2/16/2018.
@@ -11,21 +12,20 @@ public class Transaction extends RealmObject {
 
     private String payee;
     private double amount;
-    private Envelope envelope;
     //private Calendar date;
     private boolean cleared = false;
+    private boolean recurring = false;
+
+    @Required
+    private String envelope;
 
     public Transaction() {}
 
-    public Transaction(String payee, double amount, Envelope envelope /*, Calendar date*/) {
+    public Transaction(String payee, double amount, String envelope /*, Calendar date*/) {
         this.payee = payee;
         this.amount = amount;
         this.envelope = envelope;
         //this.date = date;
-    }
-
-    public void process(Envelope envelope, double amount) {
-
     }
 
     public String getPayee() {
@@ -44,11 +44,11 @@ public class Transaction extends RealmObject {
         this.amount = amount;
     }
 
-    public Envelope getEnvelope() {
+    public String getEnvelope() {
         return envelope;
     }
 
-    public void setEnvelope(final Envelope envelope) {
+    public void setEnvelope(final String envelope) {
         this.envelope = envelope;
     }
 
@@ -69,4 +69,12 @@ public class Transaction extends RealmObject {
         return cleared;
     }
 
+    public boolean toggleRecurring() {
+        if(!recurring) {
+            recurring = true;
+        } else {
+            recurring = false;
+        }
+        return recurring;
+    }
 }

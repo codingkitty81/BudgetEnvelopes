@@ -44,6 +44,8 @@ public class AddEnvelopeActivity extends AppCompatActivity {
         envelope_name = (EditText) findViewById(R.id.name_edit_text);
         opening_balance = (EditText) findViewById(R.id.open_balance_edit_text);
         accept_envelope = (Button) findViewById(R.id.accept_envelope_button);
+        cancel_envelope = (Button) findViewById(R.id.cancel_envelope_button);
+        refill_amount = (EditText) findViewById(R.id.envelope_refill_amount_1);
 
         realm = Realm.getDefaultInstance();
         realm.beginTransaction();
@@ -53,6 +55,14 @@ public class AddEnvelopeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveEnvelope();
+                Intent intent = new Intent(AddEnvelopeActivity.this, EnvelopeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cancel_envelope.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent intent = new Intent(AddEnvelopeActivity.this, EnvelopeActivity.class);
                 startActivity(intent);
             }
@@ -73,6 +83,17 @@ public class AddEnvelopeActivity extends AppCompatActivity {
                 Envelope envelope = bgRealm.createObject(Envelope.class);
                 envelope.setEnvelopeName(envelope_name.getText().toString().trim());
                 envelope.setBalance(Double.parseDouble(opening_balance.getText().toString().trim()));
+                //if a refill date is set
+                /*
+                if(!refill_date_1.equals("")) {
+
+                    Transaction transaction = bgRealm.createObject(Transaction.class);
+                    transaction.setPayee(envelope_name.getText().toString().trim());
+                    transaction.setAmount(Double.parseDouble(refill_amount.getText().toString().trim()));
+                    transaction.setEnvelope();
+                    transaction.toggleRecurring();
+                }
+                */
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override

@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Intent intent;
             switch (item.getItemId()) {
-                case R.id.navigation_add_transactions:
-                    intent = new Intent(MainActivity.this, AddTransactionActivity.class);
+                case R.id.navigation_home:
+                    intent = new Intent(MainActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.navigation_envelopes:

@@ -24,8 +24,8 @@ public class TransactionActivity extends AppCompatActivity {
                     intent = new Intent(TransactionActivity.this, EnvelopeActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.navigation_add_transactions:
-                    intent = new Intent(TransactionActivity.this, AddTransactionActivity.class);
+                case R.id.navigation_transactions:
+                    intent = new Intent(TransactionActivity.this, TransactionActivity.class);
                     startActivity(intent);
                     break;
             }
