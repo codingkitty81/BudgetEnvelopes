@@ -14,9 +14,9 @@ public class Envelope extends RealmObject {
     private String name;
 
     private double balance;
-    private boolean round_up_flag;
-    private boolean move_balance_flag;
-    private Envelope move_balance_destination;
+    private boolean round_up_flag = false;
+    private boolean move_balance_flag = false;
+    private String move_balance_destination;
     //private Calendar move_balance_date;
 
     public Envelope() {}
@@ -39,5 +39,25 @@ public class Envelope extends RealmObject {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public void toggleRoundUp() {
+        if(round_up_flag == false) {
+            round_up_flag = true;
+        } else {
+            round_up_flag = false;
+        }
+    }
+
+    public void toggleMoveBalance() {
+        if(move_balance_flag == false) {
+            move_balance_flag = true;
+        } else {
+            move_balance_flag = false;
+        }
+    }
+
+    public String getMoveBalanceDestination() { return this.move_balance_destination; }
+
+    public void setMoveBalanceDestination(String move_balance_destination) { this.move_balance_destination = move_balance_destination; }
 
 }

@@ -4,18 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
-public class EnvelopeActivity extends AppCompatActivity {
+public class EnvelopeActivity extends BaseActivity {
 
-    Realm realm;
     TextView message;
+    ListView list_view;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -49,14 +50,15 @@ public class EnvelopeActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.envelope_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        realm = Realm.getDefaultInstance();
         message = (TextView) findViewById(R.id.message);
+        list_view = (ListView) findViewById(R.id.envelope_list_view);
 
-        Envelope envelope = realm.where(Envelope.class).equalTo("name", "kitty").findFirst();
-        if(envelope != null) {
-            String name = envelope.getEnvelopeName();
-            message.setText(name);
-        }
+        Realm.init(getApplicationContext());
+        realm = Realm.getDefaultInstance();
+
+        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
+        EnvelopeListAdapter envelopeListAdapter = new EnvelopeListAdapter(envelopes);
+        list_view.setAdapter(envelopeListAdapter);
 
     }
 
