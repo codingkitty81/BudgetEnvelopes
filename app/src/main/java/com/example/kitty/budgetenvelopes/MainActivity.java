@@ -39,6 +39,7 @@ public class MainActivity extends BaseActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.main_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
 }

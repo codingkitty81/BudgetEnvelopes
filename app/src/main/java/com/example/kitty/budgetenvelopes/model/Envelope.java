@@ -1,5 +1,7 @@
 package com.example.kitty.budgetenvelopes.model;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
@@ -17,7 +19,9 @@ public class Envelope extends RealmObject {
     private boolean round_up_flag = false;
     private boolean move_balance_flag = false;
     private String move_balance_destination;
-    //private Calendar move_balance_date;
+
+    //adapted from https://stackoverflow.com/questions/48205164/how-to-get-data-from-realm-database-using-date-object/48205516#48205516
+    private Date move_balance_date;
 
     public Envelope() {}
 
@@ -60,4 +64,10 @@ public class Envelope extends RealmObject {
 
     public void setMoveBalanceDestination(String move_balance_destination) { this.move_balance_destination = move_balance_destination; }
 
+    public Date getMoveBalanceDate() { return this.move_balance_date; }
+
+    public void setMoveBalanceDate(Date date) {
+        date.setMonth(date.getMonth() + 1);
+        this.move_balance_date = date;
+    }
 }

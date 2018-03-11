@@ -4,19 +4,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class EnvelopeActivity extends BaseActivity {
 
-    TextView message;
+    Button message;
     ListView list_view;
+    ArrayList<Envelope> envelope_array = new ArrayList<Envelope>();
+    FloatingActionButton envelope_fab;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,16 +56,41 @@ public class EnvelopeActivity extends BaseActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.envelope_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        message = (TextView) findViewById(R.id.message);
+        message = (Button) findViewById(R.id.message);
         list_view = (ListView) findViewById(R.id.envelope_list_view);
+        envelope_fab = (FloatingActionButton) findViewById(R.id.add_envelope_fab);
 
         Realm.init(getApplicationContext());
         realm = Realm.getDefaultInstance();
 
         RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
-        EnvelopeListAdapter envelopeListAdapter = new EnvelopeListAdapter(envelopes);
-        list_view.setAdapter(envelopeListAdapter);
 
+        if(envelopes.size() != 0) {
+            for (int i = 0; i < envelopes.size(); i++) {
+                envelope_array.add(envelopes.get(i));
+            }
+
+            EnvelopeListAdapter envelope_list_adapter = new EnvelopeListAdapter(this, R.layout.envelope_list_view, envelope_array);
+            list_view.setAdapter(envelope_list_adapter);
+        } else {
+            message.setVisibility(View.VISIBLE);
+
+            message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(EnvelopeActivity.this, AddEnvelopeActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        envelope_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EnvelopeActivity.this, AddEnvelopeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

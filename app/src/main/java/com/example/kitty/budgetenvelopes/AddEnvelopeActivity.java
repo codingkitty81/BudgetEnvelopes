@@ -2,13 +2,18 @@ package com.example.kitty.budgetenvelopes;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
+import com.example.kitty.budgetenvelopes.model.Transaction;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import io.realm.Realm;
 
@@ -52,13 +57,41 @@ public class AddEnvelopeActivity extends BaseActivity {
         move_balance = (CheckBox) findViewById(R.id.move_balance_check_box);
 
         realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.commitTransaction();
 
         accept_envelope.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveEnvelope();
+                realm.beginTransaction();
+                Envelope new_env = realm.createObject(Envelope.class, envelope_name.getText().toString().trim());
+                //new_env.setEnvelopeName(envelope_name.getText().toString().trim());
+                new_env.setBalance(Double.parseDouble(opening_balance.getText().toString()));
+
+                //add a transaction that recurs
+                if(refill_date_1.toString() != "") {
+                    Transaction recurring_transaction = new Transaction();
+
+                    try {
+                        DateFormat date_form = new SimpleDateFormat("MM/dd/yyyy");
+                        Date result = date_form.parse(refill_date_1.getText().toString());
+                        recurring_transaction.setDate(result);
+                    } catch(ParseException parse_exception) {
+                        parse_exception.printStackTrace();
+                    }
+
+                    recurring_transaction.setAmount(Double.parseDouble(refill_amount.getText().toString()));
+                }
+
+                //set round_up_flag to true
+                if(round_up.isChecked()) {
+                    new_env.toggleRoundUp();
+                }
+
+                //set move_balance_flag to true and set date for the end of the month
+                if(move_balance.isChecked()) {
+                    new_env.toggleMoveBalance();
+
+                }
+                realm.commitTransaction();
                 Intent intent = new Intent(AddEnvelopeActivity.this, EnvelopeActivity.class);
                 startActivity(intent);
             }
@@ -78,44 +111,5 @@ public class AddEnvelopeActivity extends BaseActivity {
 
         String date = data.getStringExtra("date");
         refill_date_1.setText(date);
-    }
-
-    private void saveEnvelope() {
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm bgRealm) {
-                Envelope envelope = bgRealm.createObject(Envelope.class);
-                envelope.setEnvelopeName(envelope_name.getText().toString().trim());
-                envelope.setBalance(Double.parseDouble(opening_balance.getText().toString().trim()));
-                if(round_up.isChecked()) {
-                    envelope.toggleRoundUp();
-                }
-                if(move_balance.isChecked()) {
-                    envelope.toggleMoveBalance();
-
-                }
-                //if a refill date is set
-                /*
-                if(!refill_date_1.equals("")) {
-
-                    Transaction transaction = bgRealm.createObject(Transaction.class);
-                    transaction.setPayee(envelope_name.getText().toString().trim());
-                    transaction.setAmount(Double.parseDouble(refill_amount.getText().toString().trim()));
-                    transaction.setEnvelope(envelope_name.getText().toString().trim());
-                    transaction.toggleRecurring();
-                }
-                */
-            }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "onSuccess: Data written successfully");
-            }
-        }, new Realm.Transaction.OnError() {
-            @Override
-            public void onError(Throwable error) {
-                Log.d(TAG, "onError: Error occurred while writing");
-            }
-        });
     }
 }
