@@ -8,12 +8,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
-import com.example.kitty.budgetenvelopes.model.Transaction;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import io.realm.Realm;
 
@@ -63,9 +57,9 @@ public class AddEnvelopeActivity extends BaseActivity {
             public void onClick(View view) {
                 realm.beginTransaction();
                 Envelope new_env = realm.createObject(Envelope.class, envelope_name.getText().toString().trim());
-                //new_env.setEnvelopeName(envelope_name.getText().toString().trim());
+                new_env.setEnvelopeName(envelope_name.getText().toString().trim());
                 new_env.setBalance(Double.parseDouble(opening_balance.getText().toString()));
-
+                /*
                 //add a transaction that recurs
                 if(refill_date_1.toString() != "") {
                     Transaction recurring_transaction = new Transaction();
@@ -80,7 +74,7 @@ public class AddEnvelopeActivity extends BaseActivity {
 
                     recurring_transaction.setAmount(Double.parseDouble(refill_amount.getText().toString()));
                 }
-
+                */
                 //set round_up_flag to true
                 if(round_up.isChecked()) {
                     new_env.toggleRoundUp();
@@ -92,6 +86,7 @@ public class AddEnvelopeActivity extends BaseActivity {
 
                 }
                 realm.commitTransaction();
+                realm.close();
                 Intent intent = new Intent(AddEnvelopeActivity.this, EnvelopeActivity.class);
                 startActivity(intent);
             }

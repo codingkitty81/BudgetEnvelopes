@@ -5,13 +5,12 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -72,11 +71,13 @@ public class EnvelopeListAdapter extends ArrayAdapter<Envelope> {
 
 
         //if position > last_position then load_down_anim else load_up_anim
-        Animation animation = AnimationUtils.loadAnimation(this_context, (position > last_position) ? R.anim.load_down_anim : R.anim.load_up_anim);
-        result.startAnimation(animation);
+        //Animation animation = AnimationUtils.loadAnimation(this_context, (position > last_position) ? R.anim.load_down_anim : R.anim.load_up_anim);
+        //result.startAnimation(animation);
 
         holder.env_name.setText(envelope.getEnvelopeName());
-        holder.balance.setText(Double.toString(envelope.getBalance()));
+        Double bal = envelope.getBalance();
+        DecimalFormat bal_decimal = new DecimalFormat("#0.00");
+        holder.balance.setText(bal_decimal.format(bal));
 
         return convertView;
     }

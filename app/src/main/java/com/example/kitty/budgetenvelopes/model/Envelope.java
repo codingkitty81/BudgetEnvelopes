@@ -10,11 +10,13 @@ import io.realm.annotations.Required;
  * Created by Kitty on 2/16/2018.
  */
 
+@SuppressWarnings("serial")
 public class Envelope extends RealmObject {
     @PrimaryKey
     @Required
-    private String name;
+    private String key_name;
 
+    private String name;
     private double balance;
     private boolean round_up_flag = false;
     private boolean move_balance_flag = false;
@@ -26,6 +28,7 @@ public class Envelope extends RealmObject {
     public Envelope() {}
 
     public Envelope(String name, double balance) {
+        this.key_name = name;
         this.name = name;
         this.balance = balance;
     }
@@ -34,9 +37,7 @@ public class Envelope extends RealmObject {
         return name;
     }
 
-    public void setEnvelopeName(String name) {
-        this.name = name;
-    }
+    public void setEnvelopeName(String name) { this.name = name; }
 
     public double getBalance() { return balance; }
 

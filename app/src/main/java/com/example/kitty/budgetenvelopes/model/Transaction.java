@@ -12,6 +12,7 @@ public class Transaction extends RealmObject {
 
     private String payee;
     private double amount;
+    private String type;
     //private Calendar date;
     private boolean cleared = false;
     private boolean recurring = false;
@@ -20,6 +21,11 @@ public class Transaction extends RealmObject {
     private String envelope;
 
     public Transaction() {}
+
+    public Transaction(String payee, double amount) {
+        this.payee = payee;
+        this.amount = amount;
+    }
 
     public Transaction(String payee, double amount, String envelope /*, Calendar date*/) {
         this.payee = payee;
@@ -35,6 +41,10 @@ public class Transaction extends RealmObject {
     public void setPayee(final String payee) {
         this.payee = payee;
     }
+
+    public String getType() { return type; }
+
+    public void setType(final String type) { this.type = type; }
 
     public double getAmount() {
         return amount;

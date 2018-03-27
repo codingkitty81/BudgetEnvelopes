@@ -5,8 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.example.kitty.budgetenvelopes.model.Envelope;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainActivity extends BaseActivity {
+
+    private Button new_envelope;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -40,6 +49,24 @@ public class MainActivity extends BaseActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.main_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-    }
+        realm = Realm.getDefaultInstance();
+        new_envelope = (Button) findViewById(R.id.main_new_envelope);
 
+        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
+
+        if(envelopes.size() == 0) {
+            new_envelope.setVisibility(View.VISIBLE);
+            new_envelope.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    realm.close();
+                    Intent intent = new Intent(MainActivity.this, AddEnvelopeActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            realm.close();
+            new_envelope.setVisibility(View.INVISIBLE);
+        }
+    }
 }

@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -18,6 +20,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class EnvelopeActivity extends BaseActivity {
+
+    private static final String TAG = "EnvelopeActivity";
 
     Button message;
     ListView list_view;
@@ -72,6 +76,19 @@ public class EnvelopeActivity extends BaseActivity {
 
             EnvelopeListAdapter envelope_list_adapter = new EnvelopeListAdapter(this, R.layout.envelope_list_view, envelope_array);
             list_view.setAdapter(envelope_list_adapter);
+
+            list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Envelope env_detail = envelope_array.get(position);
+                    String env_detail_name = env_detail.getEnvelopeName();
+                    Intent intent = new Intent(EnvelopeActivity.this, DetailEnvelopeActivity.class);
+                    intent.putExtra("envelope name", env_detail_name);
+                    Log.d(TAG, "onItemClick: " + env_detail_name);
+                    realm.close();
+                    startActivity(intent);
+                }
+            });
         } else {
             message.setVisibility(View.VISIBLE);
 
