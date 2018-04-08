@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
+import com.example.kitty.budgetenvelopes.model.Globals;
 
 import io.realm.Realm;
 
@@ -23,6 +24,7 @@ public class AddEnvelopeActivity extends BaseActivity {
     private Button accept_envelope;
     private CheckBox round_up;
     private CheckBox move_balance;
+    private Globals global;
 
     Realm realm;
 
@@ -51,6 +53,8 @@ public class AddEnvelopeActivity extends BaseActivity {
         move_balance = (CheckBox) findViewById(R.id.move_balance_check_box);
 
         realm = Realm.getDefaultInstance();
+
+        global = realm.where(Globals.class).findFirst();
 
         accept_envelope.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +89,11 @@ public class AddEnvelopeActivity extends BaseActivity {
                     new_env.toggleMoveBalance();
 
                 }
+
+                Double global_balance = global.getGlobal_balance();
+                global_balance += Double.parseDouble(opening_balance.getText().toString());
+                global.setGlobal_balance(global_balance);
+
                 realm.commitTransaction();
                 realm.close();
                 Intent intent = new Intent(AddEnvelopeActivity.this, EnvelopeActivity.class);

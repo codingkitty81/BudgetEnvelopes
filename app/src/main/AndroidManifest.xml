@@ -35,6 +35,9 @@
         <activity
             android:name=".DetailEnvelopeActivity"
             android:label="@string/title_detail_envelope" />
+        <activity
+            android:name=".DetailTransactionActivity"
+            android:label="@string/title_detail_transaction" />
     </application>
 
 </manifest>

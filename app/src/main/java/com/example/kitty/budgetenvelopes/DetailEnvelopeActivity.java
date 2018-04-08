@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Kitty on 3/12/2018.
@@ -37,6 +38,7 @@ public class DetailEnvelopeActivity extends BaseActivity {
         envelope_name = (TextView) findViewById(R.id.name_text_view);
         envelope_balance = (TextView) findViewById(R.id.view_balance);
         list_view = (ListView) findViewById(R.id.env_transaction_list);
+        transaction_array = new ArrayList<Transaction>();
 
         Realm realm = Realm.getDefaultInstance();
         Intent intent = getIntent();
@@ -52,8 +54,8 @@ public class DetailEnvelopeActivity extends BaseActivity {
         Double bal = current_envelope.getBalance();
         DecimalFormat bal_decimal = new DecimalFormat("#0.00");
         envelope_balance.setText(bal_decimal.format(bal));
-        /*
-        RealmResults<Transaction> transactions = realm.where(Transaction.class).findAll();
+
+        RealmResults<Transaction> transactions = realm.where(Transaction.class).equalTo("envelope", envelope).findAll();
 
         if(transactions.size() != 0) {
             for (int i = 0; i < transactions.size(); i++) {
@@ -75,6 +77,6 @@ public class DetailEnvelopeActivity extends BaseActivity {
                     startActivity(intent);
                 }
             });*/
-       /*}*/
+        }
     }
 }

@@ -1,7 +1,11 @@
 package com.example.kitty.budgetenvelopes.model;
 
 
+import java.util.Calendar;
+import java.util.Date;
+
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 /**
@@ -10,10 +14,13 @@ import io.realm.annotations.Required;
 
 public class Transaction extends RealmObject {
 
+    @PrimaryKey
+    private int trans_id;
+
     private String payee;
     private double amount;
     private String type;
-    //private Calendar date;
+    private Date date;
     private boolean cleared = false;
     private boolean recurring = false;
 
@@ -22,16 +29,22 @@ public class Transaction extends RealmObject {
 
     public Transaction() {}
 
-    public Transaction(String payee, double amount) {
+    public Transaction(String payee, double amount, Calendar date) {
         this.payee = payee;
         this.amount = amount;
+        this.date = date.getTime();
     }
 
-    public Transaction(String payee, double amount, String envelope /*, Calendar date*/) {
+    public Transaction(int trans_id, String payee, double amount, String envelope , Calendar date) {
+        this.trans_id = trans_id;
         this.payee = payee;
         this.amount = amount;
         this.envelope = envelope;
-        //this.date = date;
+        this.date = date.getTime();
+    }
+
+    public int getTrans_id() {
+        return trans_id;
     }
 
     public String getPayee() {
@@ -62,13 +75,15 @@ public class Transaction extends RealmObject {
         this.envelope = envelope;
     }
 
-    /*public LocalDate getDate() {
-        return date;
+    public Calendar getDate() {
+        Calendar var = Calendar.getInstance();
+        var.setTime(this.date);
+        return var;
     }
 
     public void setDate(final Calendar date) {
-        this.date = date;
-    }*/
+        this.date = date.getTime();
+    }
 
     public boolean toggleClear() {
         if(!cleared) {

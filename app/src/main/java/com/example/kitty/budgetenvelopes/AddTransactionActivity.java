@@ -10,9 +10,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
+import com.example.kitty.budgetenvelopes.model.Globals;
 import com.example.kitty.budgetenvelopes.model.Transaction;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -28,9 +32,12 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
     private Spinner env_spinner;
     ArrayList<String> names;
     private String env_name;
-    private String transaction_type;
+    private String transaction_type = "Debit";
     private Button accept;
     private Button cancel;
+    private int trans_id;
+    private Globals global;
+    private Envelope envelope;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,12 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
 
         Intent incoming_intent = getIntent();
         String date = incoming_intent.getStringExtra("date");
+        if(date == null) {
+            System.out.println("date is an empty string");
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+            date = sdf.format(cal.getTime());
+        }
         date_view.setText(date);
 
         date_view.setOnClickListener(new View.OnClickListener() {
@@ -73,14 +86,43 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
         spinner.setOnItemSelectedListener(this);
         env_spinner.setOnItemSelectedListener(this);
 
+        global = realm.where(Globals.class).findFirst();
+        envelope = realm.where(Envelope.class).equalTo("name", env_name).findFirst();
+
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 realm.beginTransaction();
-                Transaction new_trans = realm.createObject(Transaction.class);
+                trans_id = global.getGlobal_trans_id();
+                Transaction new_trans = realm.createObject(Transaction.class, trans_id);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+                try {
+                    sdf.parse(date_view.getText().toString());
+                } catch(Exception e) {
+                    System.out.println("Kat's retarded " + date_view.getText().toString());
+                }
+                Calendar cal = sdf.getCalendar();
+
+                new_trans.setDate(cal);
                 new_trans.setPayee(payee_view.getText().toString().trim());
                 new_trans.setAmount(Double.parseDouble(amount.getText().toString()));
                 new_trans.setType(transaction_type.trim());
+                new_trans.setEnvelope(env_name);
+
+                global.setGlobal_trans_id(trans_id+1);
+                Double global_balance = global.getGlobal_balance();
+                Double envelope_balance = envelope.getBalance();
+
+                if(transaction_type == "Debit") {
+                    global_balance -= Double.parseDouble(amount.getText().toString());
+                    envelope_balance -= Double.parseDouble(amount.getText().toString());
+                } else {
+                    global_balance += Double.parseDouble(amount.getText().toString());
+                    envelope_balance += Double.parseDouble(amount.getText().toString());
+                }
+                global.setGlobal_balance(global_balance);
+                envelope.setBalance(envelope_balance);
 
                 realm.commitTransaction();
                 realm.close();
@@ -112,6 +154,9 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
         if(envelopes.size() != 0) {
             for (int i = 0; i < envelopes.size(); i++) {
                 names.add(envelopes.get(i).getEnvelopeName());
+                if(i == 0) {
+                    env_name = envelopes.get(i).getEnvelopeName();
+                }
             }
 
             env_spinner = (Spinner) findViewById(R.id.envelope_spinner);

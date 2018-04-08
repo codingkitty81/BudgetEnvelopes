@@ -11,9 +11,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
+import com.example.kitty.budgetenvelopes.model.Globals;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -27,6 +30,7 @@ public class EnvelopeActivity extends BaseActivity {
     ListView list_view;
     ArrayList<Envelope> envelope_array = new ArrayList<Envelope>();
     FloatingActionButton envelope_fab;
+    TextView balance;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -63,9 +67,14 @@ public class EnvelopeActivity extends BaseActivity {
         message = (Button) findViewById(R.id.message);
         list_view = (ListView) findViewById(R.id.envelope_list_view);
         envelope_fab = (FloatingActionButton) findViewById(R.id.add_envelope_fab);
+        balance = (TextView) findViewById(R.id.env_balance_view);
 
         Realm.init(getApplicationContext());
         realm = Realm.getDefaultInstance();
+
+        double global_bal = realm.where(Globals.class).findFirst().getGlobal_balance();
+        DecimalFormat bal_decimal = new DecimalFormat("#0.00");
+        balance.setText(bal_decimal.format(global_bal));
 
         RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.kitty.budgetenvelopes.model.Envelope;
+import com.example.kitty.budgetenvelopes.model.Globals;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -50,6 +51,15 @@ public class MainActivity extends BaseActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         realm = Realm.getDefaultInstance();
+
+        RealmResults<Globals> globals = realm.where(Globals.class).findAll();
+
+        if(globals.size() == 0) {
+            realm.beginTransaction();
+            realm.createObject(Globals.class);
+            realm.commitTransaction();
+        }
+
         new_envelope = (Button) findViewById(R.id.main_new_envelope);
 
         RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();

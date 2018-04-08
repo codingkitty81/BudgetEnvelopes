@@ -10,6 +10,7 @@
     <string name="title_activity_envelope">EnvelopeActivity</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_detail_envelope">Envelope Detail</string>
+    <string name="title_detail_transaction">Transaction Detail</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_transaction">TransactionActivity</string>
     <string name="title_settings">Settings</string>
