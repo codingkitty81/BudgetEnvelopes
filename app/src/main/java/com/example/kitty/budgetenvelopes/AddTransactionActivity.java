@@ -86,12 +86,12 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
         spinner.setOnItemSelectedListener(this);
         env_spinner.setOnItemSelectedListener(this);
 
-        global = realm.where(Globals.class).findFirst();
-        envelope = realm.where(Envelope.class).equalTo("name", env_name).findFirst();
-
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                global = realm.where(Globals.class).findFirst();
+                envelope = realm.where(Envelope.class).equalTo("name", env_name).findFirst();
+
                 realm.beginTransaction();
                 trans_id = global.getGlobal_trans_id();
                 Transaction new_trans = realm.createObject(Transaction.class, trans_id);
@@ -114,7 +114,7 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
                 Double global_balance = global.getGlobal_balance();
                 Double envelope_balance = envelope.getBalance();
 
-                if(transaction_type == "Debit") {
+                if(transaction_type.equals("Debit")) {
                     global_balance -= Double.parseDouble(amount.getText().toString());
                     envelope_balance -= Double.parseDouble(amount.getText().toString());
                 } else {

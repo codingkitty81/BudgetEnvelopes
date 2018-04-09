@@ -38,6 +38,9 @@
         <activity
             android:name=".DetailTransactionActivity"
             android:label="@string/title_detail_transaction" />
+        <activity
+            android:name=".EditTransactionActivity"
+            android:label="@string/title_edit_transaction" />
     </application>
 
 </manifest>
