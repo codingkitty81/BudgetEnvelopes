@@ -112,6 +112,7 @@ public class TransactionActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TransactionActivity.this, AddTransactionActivity.class);
+                realm.close();
                 startActivity(intent);
             }
         });
