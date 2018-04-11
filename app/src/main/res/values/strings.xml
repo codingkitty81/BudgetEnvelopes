@@ -11,6 +11,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_detail_envelope">Envelope Detail</string>
     <string name="title_detail_transaction">Transaction Detail</string>
+    <string name="title_edit_envelope">Edit Envelope</string>
     <string name="title_edit_transaction">Edit Transaction</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_transaction">Transactions</string>

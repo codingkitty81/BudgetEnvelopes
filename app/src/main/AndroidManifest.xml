@@ -41,6 +41,9 @@
         <activity
             android:name=".EditTransactionActivity"
             android:label="@string/title_edit_transaction" />
+        <activity
+            android:name=".EditEnvelopeActivity"
+            android:label="@string/title_edit_envelope" />
     </application>
 
 </manifest>
