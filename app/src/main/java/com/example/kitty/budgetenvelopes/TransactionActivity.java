@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class TransactionActivity extends BaseActivity {
 
@@ -29,6 +30,7 @@ public class TransactionActivity extends BaseActivity {
     FloatingActionButton transaction_fab;
     Button new_env;
     TextView balance;
+    Button transfer;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,6 +69,7 @@ public class TransactionActivity extends BaseActivity {
         transaction_fab = (FloatingActionButton) findViewById(R.id.add_transaction_fab);
         new_env = (Button) findViewById(R.id.trans_env_button);
         balance = (TextView) findViewById(R.id.trans_balance_view);
+        transfer = (Button) findViewById(R.id.transaction_transfer_button);
 
         Realm.init(getApplicationContext());
         realm = Realm.getDefaultInstance();
@@ -85,7 +88,7 @@ public class TransactionActivity extends BaseActivity {
             }
         });
 
-        RealmResults<Transaction> transactions = realm.where(Transaction.class).findAll();
+        RealmResults<Transaction> transactions = realm.where(Transaction.class).findAllSorted("date", Sort.DESCENDING);
 
         if(transactions.size() != 0) {
             for(int i = 0; i < transactions.size(); i++) {
@@ -116,15 +119,27 @@ public class TransactionActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        transfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransactionActivity.this, TransferActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void envelopeCheck() {
         RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
 
-        if(envelopes.size() == 0) {
+        if(envelopes.size() == 1) {
             new_env.setVisibility(View.VISIBLE);
+            transfer.setVisibility(View.INVISIBLE);
+            transaction_fab.setVisibility(View.INVISIBLE);
         } else {
             new_env.setVisibility(View.INVISIBLE);
+            transfer.setVisibility(View.VISIBLE);
+            transaction_fab.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -45,20 +45,20 @@ public class Envelope extends RealmObject {
         this.balance = balance;
     }
 
-    public void toggleRoundUp() {
-        if(round_up_flag == false) {
-            round_up_flag = true;
-        } else {
-            round_up_flag = false;
-        }
+    public boolean isRound_up_flag() {
+        return round_up_flag;
     }
 
-    public void toggleMoveBalance() {
-        if(move_balance_flag == false) {
-            move_balance_flag = true;
-        } else {
-            move_balance_flag = false;
-        }
+    public void setRound_up_flag(boolean round_up_flag) {
+        this.round_up_flag = round_up_flag;
+    }
+
+    public boolean isMove_balance_flag() {
+        return move_balance_flag;
+    }
+
+    public void setMove_balance_flag(boolean move_balance_flag) {
+        this.move_balance_flag = move_balance_flag;
     }
 
     public String getMoveBalanceDestination() { return this.move_balance_destination; }

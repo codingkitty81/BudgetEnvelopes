@@ -149,7 +149,7 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
     }
 
     private void loadEnvelopeSpinner() {
-        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
+        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAllSorted("name");
 
         if(envelopes.size() != 0) {
             for (int i = 0; i < envelopes.size(); i++) {
@@ -175,8 +175,10 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(parent == spinner) {
             transaction_type = parent.getItemAtPosition(position).toString();
+            System.out.println("trans_type " + transaction_type);
         } else if(parent == env_spinner) {
             env_name = parent.getItemAtPosition(position).toString();
+            System.out.println("envelope " + env_name);
         }
     }
 

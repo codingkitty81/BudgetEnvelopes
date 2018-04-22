@@ -21,8 +21,7 @@ public class Transaction extends RealmObject {
     private double amount;
     private String type;
     private Date date;
-    private boolean cleared = false;
-    private boolean recurring = false;
+    private boolean transfer;
 
     @Required
     private String envelope;
@@ -85,21 +84,11 @@ public class Transaction extends RealmObject {
         this.date = date.getTime();
     }
 
-    public boolean toggleClear() {
-        if(!cleared) {
-            cleared = true;
-        } else {
-            cleared = false;
-        }
-        return cleared;
+    public boolean isTransfer() {
+        return transfer;
     }
 
-    public boolean toggleRecurring() {
-        if(!recurring) {
-            recurring = true;
-        } else {
-            recurring = false;
-        }
-        return recurring;
+    public void setTransfer(boolean transfer) {
+        this.transfer = transfer;
     }
 }

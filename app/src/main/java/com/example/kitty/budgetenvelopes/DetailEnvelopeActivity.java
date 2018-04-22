@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by Kitty on 3/12/2018.
@@ -64,7 +65,7 @@ public class DetailEnvelopeActivity extends BaseActivity {
         DecimalFormat bal_decimal = new DecimalFormat("#0.00");
         envelope_balance.setText(bal_decimal.format(bal));
 
-        final RealmResults<Transaction> transactions = realm.where(Transaction.class).equalTo("envelope", envelope).findAll();
+        final RealmResults<Transaction> transactions = realm.where(Transaction.class).equalTo("envelope", envelope).findAllSorted("date", Sort.DESCENDING);
 
         if(transactions.size() != 0) {
             for (int i = 0; i < transactions.size(); i++) {

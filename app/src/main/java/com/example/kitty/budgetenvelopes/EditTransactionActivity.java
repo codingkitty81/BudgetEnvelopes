@@ -153,7 +153,7 @@ public class EditTransactionActivity extends BaseActivity implements AdapterView
                 realm.commitTransaction();
                 realm.close();
                 Intent intent = new Intent(EditTransactionActivity.this, TransactionActivity.class);
-                intent.putExtra("transaction id", id);
+                //intent.putExtra("transaction id", id);
                 startActivity(intent);
             }
         });
@@ -163,15 +163,14 @@ public class EditTransactionActivity extends BaseActivity implements AdapterView
             public void onClick(View v) {
                 realm.close();
                 Intent intent = new Intent(EditTransactionActivity.this, TransactionActivity.class);
-                intent.putExtra("transaction id", id);
+                //intent.putExtra("transaction id", id);
                 startActivity(intent);
             }
         });
     }
 
     public void loadEnvelopeSpinner() {
-        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
-        envelopes = envelopes.sort("name");
+        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAllSorted("name");
 
         if(envelopes.size() != 0) {
             for (int i = 0; i < envelopes.size(); i++) {

@@ -44,6 +44,9 @@
         <activity
             android:name=".EditEnvelopeActivity"
             android:label="@string/title_edit_envelope" />
+        <activity
+            android:name=".TransferActivity"
+            android:label="@string/title_activity_transfer" />
     </application>
 
 </manifest>

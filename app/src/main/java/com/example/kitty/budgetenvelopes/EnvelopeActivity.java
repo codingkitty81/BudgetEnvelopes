@@ -76,7 +76,7 @@ public class EnvelopeActivity extends BaseActivity {
         DecimalFormat bal_decimal = new DecimalFormat("#0.00");
         balance.setText(bal_decimal.format(global_bal));
 
-        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAll();
+        RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAllSorted("name");
 
         if(envelopes.size() != 0) {
             for (int i = 0; i < envelopes.size(); i++) {
