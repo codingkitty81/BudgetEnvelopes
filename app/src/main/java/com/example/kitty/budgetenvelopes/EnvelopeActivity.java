@@ -78,9 +78,11 @@ public class EnvelopeActivity extends BaseActivity {
 
         RealmResults<Envelope> envelopes = realm.where(Envelope.class).findAllSorted("name");
 
-        if(envelopes.size() != 0) {
+        if(envelopes.size() > 1) {
             for (int i = 0; i < envelopes.size(); i++) {
-                envelope_array.add(envelopes.get(i));
+                if(!envelopes.get(i).getEnvelopeName().equals("Savings")) {
+                    envelope_array.add(envelopes.get(i));
+                }
             }
 
             EnvelopeListAdapter envelope_list_adapter = new EnvelopeListAdapter(this, R.layout.envelope_list_view, envelope_array);

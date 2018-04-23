@@ -2,8 +2,11 @@ package com.example.kitty.budgetenvelopes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -36,7 +39,31 @@ public class DetailEnvelopeActivity extends BaseActivity {
     ArrayList<Transaction> transaction_array = new ArrayList<Transaction>();
     Button edit_button;
     Button delete_button;
-    int id;
+    BottomNavigationView navigation;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    intent = new Intent(DetailEnvelopeActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.navigation_envelopes:
+                    intent = new Intent(DetailEnvelopeActivity.this, EnvelopeActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.navigation_transactions:
+                    intent = new Intent(DetailEnvelopeActivity.this, TransactionActivity.class);
+                    startActivity(intent);
+                    break;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +76,22 @@ public class DetailEnvelopeActivity extends BaseActivity {
         transaction_array = new ArrayList<Transaction>();
         edit_button = (Button) findViewById(R.id.edit_envelope_button);
         delete_button = (Button) findViewById(R.id.delete_envelope_button);
+        navigation = (BottomNavigationView) findViewById(R.id.main_navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         realm = Realm.getDefaultInstance();
         Intent intent = getIntent();
         String envelope = (String) intent.getStringExtra("envelope name");
+
+        if(envelope.equals("Savings")) {
+            edit_button.setVisibility(View.INVISIBLE);
+            delete_button.setVisibility(View.INVISIBLE);
+            navigation.setVisibility(View.VISIBLE);
+        } else {
+            edit_button.setVisibility(View.VISIBLE);
+            delete_button.setVisibility(View.VISIBLE);
+            navigation.setVisibility(View.INVISIBLE);
+        }
 
         Log.d(TAG, "onCreate: " + envelope);
 
