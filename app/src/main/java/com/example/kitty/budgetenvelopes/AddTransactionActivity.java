@@ -38,6 +38,8 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
     private int trans_id;
     private Globals global;
     private Envelope envelope;
+    private Double rounded_up = 0.0;
+    private Double difference = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +116,33 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
                 Double global_balance = global.getGlobal_balance();
                 Double envelope_balance = envelope.getBalance();
 
-                if(transaction_type.equals("Debit")) {
-                    global_balance -= Double.parseDouble(amount.getText().toString());
-                    envelope_balance -= Double.parseDouble(amount.getText().toString());
+                if (transaction_type.equals("Debit")) {
+                    if(envelope.isRound_up_flag()) {
+                        rounded_up = Math.ceil(Double.parseDouble(amount.getText().toString()));
+                        difference = rounded_up - Double.parseDouble(amount.getText().toString());
+
+                        global_balance -= rounded_up;
+                        envelope_balance -= rounded_up;
+
+                        new_trans.setRounded_up(true);
+                        new_trans.setDifference(difference);
+
+                        Envelope savings = realm.where(Envelope.class).equalTo("name", "Savings").findFirst();
+                        Double savings_balance = savings.getBalance();
+                        savings_balance += difference;
+                        savings.setBalance(savings_balance);
+                        realm.insertOrUpdate(savings);
+                    } else {
+                        global_balance -= Double.parseDouble(amount.getText().toString());
+                        envelope_balance -= Double.parseDouble(amount.getText().toString());
+                    }
                 } else {
                     global_balance += Double.parseDouble(amount.getText().toString());
                     envelope_balance += Double.parseDouble(amount.getText().toString());
                 }
+
                 global.setGlobal_balance(global_balance);
                 envelope.setBalance(envelope_balance);
-
                 realm.commitTransaction();
                 realm.close();
                 Intent intent = new Intent(AddTransactionActivity.this, TransactionActivity.class);

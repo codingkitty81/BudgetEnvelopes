@@ -22,6 +22,8 @@ public class Transaction extends RealmObject {
     private String type;
     private Date date;
     private boolean transfer;
+    private double difference;
+    private boolean rounded_up = false;
 
     @Required
     private String envelope;
@@ -90,5 +92,21 @@ public class Transaction extends RealmObject {
 
     public void setTransfer(boolean transfer) {
         this.transfer = transfer;
+    }
+
+    public double getDifference() {
+        return difference;
+    }
+
+    public void setDifference(double difference) {
+        this.difference = difference;
+    }
+
+    public boolean isRounded_up() {
+        return rounded_up;
+    }
+
+    public void setRounded_up(boolean rounded_up) {
+        this.rounded_up = rounded_up;
     }
 }
