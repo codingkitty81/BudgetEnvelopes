@@ -53,6 +53,9 @@
         <activity
             android:name=".EnvelopeSettingsActivity"
             android:label="@string/title_envelope_settings" />
+        <activity
+            android:name=".AlertActivity"
+            android:label="@string/title_activity_alert" />
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@
     <string name="title_activity_main">BudgetEnvelopes</string>
     <string name="title_add_envelopes">Add Envelope</string>
     <string name="title_add_transactions">Add Transaction</string>
+    <string name="title_activity_alert">Negative Balance Alert</string>
     <string name="calendar">Calendar</string>
     <string name="title_envelopes">Envelopes</string>
     <string name="title_home">Home</string>

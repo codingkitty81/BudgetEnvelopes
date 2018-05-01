@@ -40,6 +40,8 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
     private Envelope envelope;
     private Double rounded_up = 0.0;
     private Double difference = 0.0;
+    private Double envelope_balance;
+    private Double global_balance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +115,8 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
                 new_trans.setEnvelope(env_name);
 
                 global.setGlobal_trans_id(trans_id+1);
-                Double global_balance = global.getGlobal_balance();
-                Double envelope_balance = envelope.getBalance();
+                global_balance = global.getGlobal_balance();
+                envelope_balance = envelope.getBalance();
 
                 if (transaction_type.equals("Debit")) {
                     if(envelope.isRound_up_flag()) {
@@ -140,7 +142,13 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
                     global_balance += Double.parseDouble(amount.getText().toString());
                     envelope_balance += Double.parseDouble(amount.getText().toString());
                 }
+                System.out.println(envelope_balance);
 
+                if(envelope_balance < 0.0) {
+                    System.out.println("I'm below 0.0");
+                    Intent intent = new Intent(AddTransactionActivity.this, AlertActivity.class);
+                    startActivityForResult(intent, 1);
+                }
                 global.setGlobal_balance(global_balance);
                 envelope.setBalance(envelope_balance);
                 realm.commitTransaction();
@@ -162,9 +170,25 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
 
     @Override
     protected void onActivityResult(int request_code, int result_code, Intent data){
-
-        String date = data.getStringExtra("date");
-        date_view.setText(date);
+        if(request_code == 0) {
+            String date = data.getStringExtra("date");
+            date_view.setText(date);
+        } else if(request_code == 1) {
+            String response = data.getStringExtra("response");
+            if(response.equals("accept")) {
+                Envelope savings = realm.where(Envelope.class).equalTo("name", "Savings").findFirst();
+                Double savings_balance = savings.getBalance();
+                savings_balance += envelope_balance;
+                global_balance -= envelope_balance;
+                envelope_balance = 0.0;
+                savings.setBalance(savings_balance);
+            } else {
+                realm.cancelTransaction();
+                realm.close();
+                Intent intent = new Intent(AddTransactionActivity.this, TransactionActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 
     private void loadEnvelopeSpinner() {
