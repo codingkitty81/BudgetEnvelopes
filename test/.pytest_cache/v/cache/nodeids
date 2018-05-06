@@ -1,0 +1,4 @@
+[
+  "test_transaction_0single.py::test_create_transaction",
+  "test_transaction_0single.py::test_edit_transaction"
+]

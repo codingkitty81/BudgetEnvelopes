@@ -1,0 +1,10 @@
+[
+  "test/test_envelope_0single.py::test_create_envelope",
+  "test/test_envelope_0single.py::test_edit_envelope",
+  "test/test_envelope_0single.py::test_delete_envelope",
+  "test/test_envelope_1multiple.py::test_create_multiple_envelopes",
+  "test/test_envelope_1multiple.py::test_edit_multiple_envelopes",
+  "test/test_envelope_1multiple.py::test_delete_multiple_envelopes",
+  "test/test_transaction_0single.py::test_create_transaction",
+  "test/test_transaction_0single.py::test_edit_transaction"
+]

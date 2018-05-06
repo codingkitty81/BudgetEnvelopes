@@ -196,7 +196,9 @@ public class AddTransactionActivity extends BaseActivity implements AdapterView.
 
         if(envelopes.size() != 0) {
             for (int i = 0; i < envelopes.size(); i++) {
-                names.add(envelopes.get(i).getEnvelopeName());
+                if(!envelopes.get(i).getEnvelopeName().equals("Savings")) {
+                    names.add(envelopes.get(i).getEnvelopeName());
+                }
                 if(i == 0) {
                     env_name = envelopes.get(i).getEnvelopeName();
                 }

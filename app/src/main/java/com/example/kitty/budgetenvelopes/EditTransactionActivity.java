@@ -174,7 +174,9 @@ public class EditTransactionActivity extends BaseActivity implements AdapterView
 
         if(envelopes.size() != 0) {
             for (int i = 0; i < envelopes.size(); i++) {
-                names.add(envelopes.get(i).getEnvelopeName());
+                if(!envelopes.get(i).getEnvelopeName().equals("Savings")) {
+                    names.add(envelopes.get(i).getEnvelopeName());
+                }
             }
             envelope_edit = (Spinner) findViewById(R.id.edit_transaction_envelope_edit);
             ArrayAdapter<String> envelope_spinner_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, names);
