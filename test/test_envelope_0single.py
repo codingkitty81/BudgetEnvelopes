@@ -1,6 +1,5 @@
 import pytest
 import time
-from appium.webdriver.common.touch_action import TouchAction
 
 def test_create_envelope(driver):
 	element = driver.find_element_by_id('main_new_envelope')

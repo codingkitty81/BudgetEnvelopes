@@ -1,4 +1,5 @@
 [
-  "test_transaction_0single.py::test_create_transaction",
-  "test_transaction_0single.py::test_edit_transaction"
+  "test_transaction_1multiple.py::test_create_multiple_debit_transactions",
+  "test_transaction_1multiple.py::test_edit_multiple_transactions",
+  "test_transaction_1multiple.py::test_delete_multiple_transactions"
 ]

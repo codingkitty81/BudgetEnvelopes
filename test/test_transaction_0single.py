@@ -1,13 +1,11 @@
 import pytest
 import time
-from appium.webdriver.common.touch_action import TouchAction
 
 def test_create_transaction(driver):
 	activity = driver.current_activity
 	if activity != ".MainActivity":
 		element = driver.find_element_by_xpath('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[1]')
 		element.click()
-		#TouchAction.tap(driver, None, 185, 1680, 1).perform()
 	time.sleep(2)
 	element = driver.find_element_by_id('main_new_envelope')
 	assert element is not None
@@ -30,7 +28,6 @@ def test_create_transaction(driver):
 	assert activity == ".EnvelopeActivity"
 	element = driver.find_element_by_xpath('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[3]')
 	element.click()
-	#TouchAction.tap(driver, element, 890, 1650, 1).perform()
 	activity = driver.current_activity
 	assert activity == ".TransactionActivity"
 	element = driver.find_element_by_id('add_transaction_fab')
@@ -94,3 +91,27 @@ def test_edit_transaction(driver):
 	assert element is not None
 	assert element.text == "53.18"
 	
+def test_delete_transaction(driver):
+	activity = driver.current_activity
+	assert activity == ".TransactionActivity"
+	element = driver.find_element_by_id('payee_view')
+	assert element is not None
+	element.click()
+	element = driver.find_element_by_id('delete_transaction_button')
+	assert element is not None
+	element.click()
+	activity = driver.current_activity
+	assert activity == ".TransactionActivity"
+	element = driver.find_element_by_id('navigation_envelopes')
+	assert element is not None
+	element.click()
+	activity = driver.current_activity
+	assert activity == ".EnvelopeActivity"
+	element = driver.find_element_by_id('env_name')
+	assert element is not None
+	element.click()
+	element = driver.find_element_by_id('delete_envelope_button')
+	assert element is not None
+	element.click()
+	activity = driver.current_activity
+	assert activity == ".EnvelopeActivity"
